@@ -12,7 +12,8 @@ e.g.
 ## Default
 The default byte order of RGB565 is targeted for the ILI9341 LCD display.
 Thus, the swap is enabled.
-```isSWAP = True
+```
+isSWAP = True
 ```
 
 The script is same as the output file as 
