@@ -5,6 +5,7 @@ import os
 
 from PIL import Image
 from PIL import ImageDraw
+import struct
 
 #isSWAP = False
 isSWAP = True
@@ -13,10 +14,10 @@ def main():
 
     len_argument = len(sys.argv)
     filesize = 0
-    if (len_argument != 3):
+    if (len_argument != 4):
       print ("")
       print ("Correct Usage:")
-      print ("\tpython png2rgb565.py <png_file> <include_file>")
+      print ("\tpython png2rgb565.py <png_file> <include_file> <binary_file>")
       print ("")
       sys.exit(0)
 
@@ -36,8 +37,15 @@ def main():
         print ("Can't write the file %s" % sys.argv[2])
         sys.exit(0)
 
+    try:
+        binoutfile = open(sys.argv[3],"wb")
+    except:
+        print ("Can't write the binary file %s" % sys.argv[3])
+        sys.exit(0)
+
+
     print ("/* Image Width:%d Height:%d */" % (im.size[0], im.size[1]), file=outfile)
-    print ("const static uint16_t image[] = {", file=outfile)
+    print ("const static uint16_t image_640_240_jimmy[] = {", file=outfile)
 
     pix = im.load()  #load pixel array
     for h in range(image_height):
@@ -58,8 +66,10 @@ def main():
                     swap_string_high = (rgb & 0x00FF) << 8
                     swap_string = swap_string_low | swap_string_high
                     print ("0x%04x," %(swap_string), file=outfile, end = '')
+                    binoutfile.write(struct.pack('H', swap_string))
                 else:
                     print ("0x%04x," %(rgb), file=outfile, end = '')
+                    binoutfile.write(struct.pack('H', rgb))
             else:
                 rgb = 0
         #
@@ -67,6 +77,7 @@ def main():
     print ("};", file=outfile)
 
     outfile.close()
+    binoutfile.close()
 
     print ("PNG file \"%s\"" % sys.argv[1], "converted to \"%s\"" % sys.argv[2])
 
