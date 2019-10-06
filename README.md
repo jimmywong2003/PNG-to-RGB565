@@ -4,10 +4,10 @@ Python Script how to convert the PNG to RGB565 format
 
 Usage:
 
-python png2rgb565.py <image_file> <output_include_file>
+python png2rgb565.py <image_file> <output_include_file> <output_binary_file>
 
 e.g.
-  python png2rgb565.py data\NRF52840_DK_ILI9341.png NRF52840_DK.h
+  python png2rgb565.py data\NRF52840_DK_ILI9341.png NRF52840_DK.h NRF52840.bin
   
 ## Default
 The default byte order of RGB565 is targeted for the ILI9341 LCD display.
